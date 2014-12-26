@@ -1,0 +1,11 @@
+{
+    "name": "sergiors/applyzer",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Sérgio Rafael Siqueira",
+            "email": "sergiorsiqueira9@gmail.com"
+        }
+    ],
+    "require": {}
+}
