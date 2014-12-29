@@ -1,36 +1,22 @@
 <?php
-namespace Sergiors;
+namespace Sergiors\Applyzer;
 
-class Applyzer
+use Sergiors\Applyzer\ApplyzerInterface;
+use Sergiors\Applyzer\Exception\InvalidArgumentException;
+
+/**
+ * @author Sérgio Rafael Siqueira <sergiorsiqueira9@gmail.com>
+ */
+class Applyzer implements ApplyzerInterface
 {
     /**
-     * @param array
+     * @param array $data
+     * @param object $object
      */
-    private $data = [];
-
-    /**
-     * @param mixed $key
-     * @param string [$value]
-     */
-    public function add($key, $value = null)
-    {
-        if (is_array($key)) {
-            foreach ($key as $key => $value) {
-                $this->add($key, $value);
-            }
-
-            return $this;
-        }
-
-        $this->data[$key] = $value;
-
-        return $this;
-    }
-
-    public function apply(&$object)
+    public function apply(array $data, $object)
     {
         if (!is_object($object)) {
-            return false;
+            throw new InvalidArgumentException('Your second parameter must be an object.');
         }
 
         $reflectionObject = new \ReflectionObject($object);
@@ -40,15 +26,15 @@ class Applyzer
             if ($this->isSetMethod($method)) {
                 $attribute = lcfirst(substr($method->name, 3));
                 
-                if (!isset($this->data[$attribute])) {
+                if (!isset($data[$attribute])) {
                     continue;
                 }
 
-                $method->invoke($object, $this->data[$attribute]);
+                $method->invoke($object, $data[$attribute]);
             }
         }
         
-        return $this;
+        return $object;
     }
 
     /**

@@ -1,9 +1,9 @@
 Applyzer
 --------
 
-A simple way to invoke setters methods.
+A simple way to invoke setter methods.
 
-When you work with setters methods, is very boring call the setters methods every time;
+When you work with setter methods, is very boring call the setter methods every time;
 
 If you work something similar as below:
 ```php
@@ -16,7 +16,5 @@ $user
 **Now, with the Applyzer, the code will look like this:**
 ```php
 $user = new User();
-(new Applyzer())
-  ->add($_POST)
-  ->apply($user);
+$user = (new Applyzer())->apply($_POST, $user);
 ```
