@@ -45,10 +45,8 @@ class Applyzer implements ApplyzerInterface
     {
         $methodLength = strlen($method->name);
 
-        return (
-            (0 === strpos($method->name, 'set') && 3 < $methodLength) &&
-            1 === $method->getNumberOfRequiredParameters()
-        );
+        return (0 === strpos($method->name, 'set') && 3 < $methodLength) &&
+               1 === $method->getNumberOfRequiredParameters();
     }
 }
 
