@@ -23,18 +23,28 @@ class Applyzer implements ApplyzerInterface
         $reflectionMethods = $reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         foreach ($reflectionMethods as $method) {
-            if ($this->isSetMethod($method)) {
-                $attribute = lcfirst(substr($method->name, 3));
-                
-                if (!isset($data[$attribute])) {
-                    continue;
-                }
-
-                $method->invoke($object, $data[$attribute]);
-            }
+            $this->callMethod($object, $method, $data);
         }
-        
+
         return $object;
+    }
+
+    /**
+     * @param object $object
+     * @param \ReflectionMethod $method
+     * @param array $data
+     */
+    private function callMethod($object, \ReflectionMethod $method, array $data)
+    {
+        if (!$this->isSetMethod($method)) {
+            return;
+        }
+
+        $attribute = lcfirst(substr($method->name, 3));
+
+        if (isset($data[$attribute])) {
+            $method->invoke($object, $data[$attribute]);
+        }
     }
 
     /**
@@ -45,10 +55,8 @@ class Applyzer implements ApplyzerInterface
     {
         $methodLength = strlen($method->name);
 
-        return (
-            (0 === strpos($method->name, 'set') && 3 < $methodLength) &&
-            1 === $method->getNumberOfRequiredParameters()
-        );
+        return (0 === strpos($method->name, 'set') && 3 < $methodLength) &&
+               1 === $method->getNumberOfRequiredParameters();
     }
 }
 
