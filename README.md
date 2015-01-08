@@ -13,8 +13,20 @@ $user
   ->setEmail($_POST['email']);
 ```
 
-**Now, with the Applyzer, the code will look like this:**
+Now, with the Applyzer, the code will look like this:
 ```php
 $user = new User();
 $user = (new Applyzer())->apply($_POST, $user);
 ```
+
+Installation
+------------
+You can install with Composer
+
+```sh
+php composer.phar require sergiors/applyzer "~1.0"
+```
+
+License
+-------
+Licensed under the MIT License.
