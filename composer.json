@@ -1,5 +1,6 @@
 {
     "name": "sergiors/applyzer",
+    "description": "A simple way to invoke setter methods",
     "type": "library",
     "license": "MIT",
     "authors": [
