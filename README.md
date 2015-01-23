@@ -10,6 +10,7 @@ If you work something similar as below:
 $user = new User();
 $user
   ->setName($_POST['name'])
+  ->setLastName($_POST['last_name'])
   ->setEmail($_POST['email']);
 ```
 

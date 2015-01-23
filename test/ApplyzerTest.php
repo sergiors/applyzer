@@ -21,4 +21,21 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
         
         $this->assertEquals('James', $user->getName());
     }
+    
+    /**
+     * @test
+     */
+    public function shouldReturnLastNameChanged()
+    {
+        $user = new User();
+        $data = [
+            'last_name' => 'Jackson'
+        ];
+        
+        $applyzer = new Applyzer();
+        $user = $applyzer->apply($data, $user);
+        
+        $this->assertEquals('Jackson', $user->getLastName());
+    }
+    
 }

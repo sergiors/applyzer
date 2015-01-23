@@ -16,9 +16,11 @@ class Applyzer implements ApplyzerInterface
     public function apply(array $data, $object)
     {
         if (!is_object($object)) {
-            throw new InvalidArgumentException('Your second parameter must be an object.');
+            throw new InvalidArgumentException('The second parameter must be an object');
         }
-
+        
+        $data = $this->formalize($data);
+        
         $reflectionObject = new \ReflectionObject($object);
         $reflectionMethods = $reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -27,6 +29,22 @@ class Applyzer implements ApplyzerInterface
         }
 
         return $object;
+    }
+    
+    /**
+     * @param array $data
+     * @return array
+     */
+    private function formalize(array $data)
+    {
+        $formalized = [];
+    
+        foreach ($data as $attribute => $value) {
+            $attribute = $this->formatAttribute($attribute);
+            $formalized[$attribute] = $value;
+        }
+        
+        return $formalized;
     }
 
     /**
@@ -37,14 +55,28 @@ class Applyzer implements ApplyzerInterface
     private function callMethod($object, \ReflectionMethod $method, array $data)
     {
         if (!$this->isSetMethod($method)) {
-            return;
+            return null;
         }
-
-        $attribute = lcfirst(substr($method->name, 3));
+        
+        $attribute = substr($method->name, 3);
 
         if (isset($data[$attribute])) {
             $method->invoke($object, $data[$attribute]);
         }
+    }
+    
+    /**
+     * @param string $attribute
+     * @return string
+     */
+    private function formatAttribute($attribute)
+    {
+        return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) {
+                return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
+            }, $attribute
+        );
+
+        return $attribute;
     }
 
     /**
