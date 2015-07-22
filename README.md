@@ -17,7 +17,7 @@ $user
 Now, with the Applyzer, the code will look like this:
 ```php
 $user = new User();
-$user = (new Applyzer())->apply($_POST, $user);
+$user = Applyzer::apply($_POST, $user);
 ```
 
 Installation
@@ -25,7 +25,7 @@ Installation
 You can install with Composer
 
 ```sh
-php composer.phar require sergiors/applyzer "~1.0"
+php composer.phar require sergiors/applyzer
 ```
 
 License

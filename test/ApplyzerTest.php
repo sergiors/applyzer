@@ -16,8 +16,7 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
             'name' => 'James'
         ];
         
-        $applyzer = new Applyzer();
-        $user = $applyzer->apply($data, $user);
+        $user = Applyzer::apply($data, $user);
         
         $this->assertEquals('James', $user->getName());
     }
@@ -32,8 +31,7 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
             'last_name' => 'Jackson'
         ];
         
-        $applyzer = new Applyzer();
-        $user = $applyzer->apply($data, $user);
+        $user = Applyzer::apply($data, $user);
         
         $this->assertEquals('Jackson', $user->getLastName());
     }

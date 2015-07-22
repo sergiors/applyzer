@@ -5,27 +5,33 @@ use Sergiors\Applyzer\ApplyzerInterface;
 use Sergiors\Applyzer\Exception\InvalidArgumentException;
 
 /**
- * @author Sérgio Rafael Siqueira <sergiorsiqueira9@gmail.com>
+ * @author Sérgio Rafael Siqueira <sergio@inbep.com.br>
  */
 class Applyzer implements ApplyzerInterface
 {
+    private function __construct()
+    {
+    }
+
     /**
      * @param array $data
      * @param object $object
      */
-    public function apply(array $data, $object)
+    public static function apply(array $data, $object)
     {
+        $that = new self();
+
         if (!is_object($object)) {
             throw new InvalidArgumentException('The second parameter must be an object');
         }
         
-        $data = $this->formalize($data);
+        $data = $that->formalize($data);
         
         $reflectionObject = new \ReflectionObject($object);
         $reflectionMethods = $reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
         foreach ($reflectionMethods as $method) {
-            $this->callMethod($object, $method, $data);
+            $that->callMethod($object, $method, $data);
         }
 
         return $object;
@@ -91,4 +97,3 @@ class Applyzer implements ApplyzerInterface
                1 === $method->getNumberOfRequiredParameters();
     }
 }
-

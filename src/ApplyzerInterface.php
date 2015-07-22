@@ -4,9 +4,9 @@ namespace Sergiors\Applyzer;
 /**
  * Defines the interface of applyzers
  *
- * @author Sérgio Rafael Siqueira <sergiorsiqueira9@gmail.com>
+ * @author Sérgio Rafael Siqueira <sergio@inbep.com.br>
  */
 interface ApplyzerInterface
 {
-    public function apply(array $data, $object);
+    public static function apply(array $data, $object);
 }
