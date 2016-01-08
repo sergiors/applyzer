@@ -27,10 +27,10 @@ class Applyzer implements ApplyzerInterface
         
         $data = $that->formalize($data);
         
-        $reflectionObject = new \ReflectionObject($object);
-        $reflectionMethods = $reflectionObject->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $reflObject = new \ReflectionObject($object);
+        $reflMethods = $reflObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
-        foreach ($reflectionMethods as $method) {
+        foreach ($reflMethods as $method) {
             $that->callMethod($object, $method, $data);
         }
 
@@ -61,14 +61,16 @@ class Applyzer implements ApplyzerInterface
     private function callMethod($object, \ReflectionMethod $method, array $data)
     {
         if (!$this->isSetMethod($method)) {
-            return null;
+            return;
         }
         
         $attribute = substr($method->name, 3);
 
-        if (isset($data[$attribute])) {
-            $method->invoke($object, $data[$attribute]);
+        if (!isset($data[$attribute])) {
+            return;
         }
+
+        $method->invoke($object, $data[$attribute]);
     }
     
     /**
@@ -77,9 +79,12 @@ class Applyzer implements ApplyzerInterface
      */
     private function formatAttribute($attribute)
     {
-        return preg_replace_callback('/(^|_|\.)+(.)/', function ($match) {
+        return preg_replace_callback(
+            '/(^|_|\.)+(.)/',
+            function ($match) {
                 return ('.' === $match[1] ? '_' : '').strtoupper($match[2]);
-            }, $attribute
+            },
+            $attribute
         );
 
         return $attribute;
