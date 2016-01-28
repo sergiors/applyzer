@@ -1,7 +1,7 @@
 <?php
+
 namespace Sergiors\Applyzer;
 
-use Sergiors\Applyzer\ApplyzerInterface;
 use Sergiors\Applyzer\Exception\InvalidArgumentException;
 
 /**
@@ -14,7 +14,7 @@ class Applyzer implements ApplyzerInterface
     }
 
     /**
-     * @param array $data
+     * @param array  $data
      * @param object $object
      */
     public static function apply(array $data, $object)
@@ -24,9 +24,9 @@ class Applyzer implements ApplyzerInterface
         if (!is_object($object)) {
             throw new InvalidArgumentException('The second parameter must be an object');
         }
-        
+
         $data = $that->formalize($data);
-        
+
         $reflObject = new \ReflectionObject($object);
         $reflMethods = $reflObject->getMethods(\ReflectionMethod::IS_PUBLIC);
 
@@ -36,34 +36,35 @@ class Applyzer implements ApplyzerInterface
 
         return $object;
     }
-    
+
     /**
      * @param array $data
+     *
      * @return array
      */
     private function formalize(array $data)
     {
         $formalized = [];
-    
+
         foreach ($data as $attribute => $value) {
             $attribute = $this->formatAttribute($attribute);
             $formalized[$attribute] = $value;
         }
-        
+
         return $formalized;
     }
 
     /**
-     * @param object $object
+     * @param object            $object
      * @param \ReflectionMethod $method
-     * @param array $data
+     * @param array             $data
      */
     private function callMethod($object, \ReflectionMethod $method, array $data)
     {
         if (!$this->isSetMethod($method)) {
             return;
         }
-        
+
         $attribute = substr($method->name, 3);
 
         if (!isset($data[$attribute])) {
@@ -72,9 +73,10 @@ class Applyzer implements ApplyzerInterface
 
         $method->invoke($object, $data[$attribute]);
     }
-    
+
     /**
      * @param string $attribute
+     *
      * @return string
      */
     private function formatAttribute($attribute)
@@ -92,7 +94,8 @@ class Applyzer implements ApplyzerInterface
 
     /**
      * @param \ReflectionMethod $method
-     * @return boolean
+     *
+     * @return bool
      */
     private function isSetMethod(\ReflectionMethod $method)
     {

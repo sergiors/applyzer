@@ -1,8 +1,9 @@
 <?php
+
 namespace Sergiors\Applyzer;
 
 /**
- * Defines the interface of applyzers
+ * Defines the interface of applyzers.
  *
  * @author Sérgio Rafael Siqueira <sergio@inbep.com.br>
  */

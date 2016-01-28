@@ -1,8 +1,8 @@
 <?php
-namespace Sergiors\Applyzer;
+
+namespace Sergiors\Applyzer\Tests;
 
 use Sergiors\Applyzer\Applyzer;
-use Sergiors\Applyzer\User;
 
 class ApplyzerTest extends \PHPUnit_Framework_TestCase
 {
@@ -13,14 +13,14 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
     {
         $user = new User();
         $data = [
-            'name' => 'James'
+            'name' => 'James',
         ];
-        
+
         $user = Applyzer::apply($data, $user);
-        
+
         $this->assertEquals('James', $user->getName());
     }
-    
+
     /**
      * @test
      */
@@ -28,12 +28,11 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
     {
         $user = new User();
         $data = [
-            'last_name' => 'Jackson'
+            'last_name' => 'Jackson',
         ];
-        
+
         $user = Applyzer::apply($data, $user);
-        
+
         $this->assertEquals('Jackson', $user->getLastName());
     }
-    
 }
