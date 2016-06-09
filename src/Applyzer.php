@@ -22,7 +22,7 @@ class Applyzer implements ApplyzerInterface
         $that = new self();
 
         if (!is_object($object)) {
-            throw new InvalidArgumentException('The second parameter must be an object');
+            throw new InvalidArgumentException('The second parameter must be an object.');
         }
 
         $data = $that->formalize($data);
@@ -44,14 +44,12 @@ class Applyzer implements ApplyzerInterface
      */
     private function formalize(array $data)
     {
-        $formalized = [];
+        $data = array_flip($data);
+        $data = array_map(function ($attribute) {
+            return $this->formatAttribute($attribute);
+        }, $data);
 
-        foreach ($data as $attribute => $value) {
-            $attribute = $this->formatAttribute($attribute);
-            $formalized[$attribute] = $value;
-        }
-
-        return $formalized;
+        return array_flip($data);
     }
 
     /**
@@ -67,11 +65,9 @@ class Applyzer implements ApplyzerInterface
 
         $attribute = substr($method->name, 3);
 
-        if (!isset($data[$attribute])) {
-            return;
+        if (isset($data[$attribute])) {
+            $method->invoke($object, $data[$attribute]);
         }
-
-        $method->invoke($object, $data[$attribute]);
     }
 
     /**
@@ -88,8 +84,6 @@ class Applyzer implements ApplyzerInterface
             },
             $attribute
         );
-
-        return $attribute;
     }
 
     /**
@@ -101,7 +95,7 @@ class Applyzer implements ApplyzerInterface
     {
         $methodLength = strlen($method->name);
 
-        return (0 === strpos($method->name, 'set') && 3 < $methodLength) &&
-               1 === $method->getNumberOfRequiredParameters();
+        return (0 === strpos($method->name, 'set') && 3 < $methodLength)
+                && 1 === $method->getNumberOfRequiredParameters();
     }
 }
