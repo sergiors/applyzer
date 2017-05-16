@@ -14,11 +14,13 @@ class ApplyzerTest extends \PHPUnit_Framework_TestCase
         $user = new User();
         $data = [
             'name' => 'James',
+            'last_name' => 'James',
         ];
 
         $user = Applyzer::apply($data, $user);
 
         $this->assertEquals('James', $user->getName());
+        $this->assertEquals('James', $user->getLastName());
     }
 
     /**
