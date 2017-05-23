@@ -43,7 +43,7 @@ class Applyzer implements ApplyzerInterface
      * @return array
      */
     private function formalize(array $data)
-    {;
+    {
         return array_reduce(array_keys($data), function (array $prev, $attribute) use ($data) {
             return array_merge($prev, [
                 $this->formatAttribute($attribute) => $data[$attribute]
